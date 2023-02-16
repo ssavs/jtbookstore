@@ -1,5 +1,7 @@
 // const { addition } = require('./addition.js');
 
+// const bodyParser = require("body-parser");
+
 //step 3
 // let { addition } = require('./addition.js');
 // addition(3, 4);
@@ -48,7 +50,7 @@ route.get('/users',(req,res)=>{
 
   //db 
   db.query(strQry, (err,data)=>{
-    if(err) console.log(err);;
+    if(err) throw err;
     res.status(200).json({result:data});
   })
 });
@@ -70,6 +72,63 @@ db.query(strQry,[detail],(err)=>{
 })
 })
 
+
+// let string = 'i love programming';
+// let strings = string.split('').reverse();
+// console.log(strings.join(''));
+
+//put
+route.put('/user/:id', bodyParser.json(), (req, res) => {
+  console.log(req.body);
+  const strQry = 
+`UPDATE TABLE Users
+SET? 
+WHERE userID =?;
+`;
+db.query(strQry,[data,req.params.id], // question mark is a placeholder
+  (err)=>{
+  if (err) throw err; {
+        res.status(200).json({msg:'A row was affected.'})
+      }
+});
+});
+
+//delete
+route.delete('/user/:id', (req, res) => {
+  console.log(req.params);
+`
+DELETE FROM Users
+WHERE UserID = ?;
+`;
+//db
+db.query(strQry,[req.params.id], 
+  (err)=>{
+    if (err) throw err; {
+          res.status(200).json({msg:'A row was affected.'})
+        }
+  });
+  });
+
+//route login
+route.patch('/login',bodyParser.json(),(req,res)=>{
+  console.log(req.body);
+  ``
+})
+
 app.listen(port, () => {
   console.log(`server is running at ${port}`);
 });
+
+
+
+// route.patch('/login',bodyParser.json(),(req,res)=>{
+// const putQuery = `select firstName,lastName,emailAddress,userPass
+// from Users
+// where emailAddress = '${emailAddress}'
+// `;
+// db.query(putQuery,(err,data)=>{
+// if (err) throw err;
+// if((data.lengths) || (data =))
+// })
+
+// })
