@@ -14,6 +14,9 @@ const express = require("express");
 //Path
 const path = require("path");
 
+//cors
+const cors = require("cors");
+
 //db
 const db = require("./config"); //when you want to import use './'
 
@@ -29,14 +32,26 @@ const app = express();
 //Router
 const route = express.Router();
 
+//middleware
+const {errorHandling} = require('./middleware/ErrorHandling');
+
+//message
+const {message} = 
+require('./middleware/message');
+
 app.use(
   route,
+  cors({
+    origin:['http://127.0.0.1:8080',
+  'http://localhost:8080'],
+  Credentials:true
+}),
   express.json,
   bodyParser.urlencoded({extended:false}),
-  );
+  )
 
 //Home or /
-route.get("/", (req, res) => {
+route.get("^/$|/jtbookstore", message, (req, res) => {
   res.status(200).sendFile(path.join(__dirname,'./view/index.html'));
 })
 
@@ -50,7 +65,7 @@ route.get('/users',(req,res)=>{
 
   //db 
   db.query(strQry, (err,data)=>{
-    if(err) throw err;
+    if(err) err;
     res.status(200).json({result:data});
   })
 });
